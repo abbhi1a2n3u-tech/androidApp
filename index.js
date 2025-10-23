@@ -28,11 +28,17 @@ const user = {
 
 // Import routes
 app.use("/api/users", async (req, res) => {
-  res.json(user);
+  console.log("User route accessed");
+  const newUser = await User.findOne({ email: user.email });
+  if (!newUser) {
+    const createdUser = new User(user);
+    await createdUser.save();
+    return res.json(createdUser);
+  }
 });
 app.use("/api", router);
 
-app.post("/api", async (req, res) => {
+app.get("/api", async (req, res) => {
 
     console.log(" as ");
     const a = {
