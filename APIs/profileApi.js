@@ -32,9 +32,10 @@ export const getUser = async (req, res) => {
     a = {
         email: req.body.email
     }
+    console.log(" as "+  req.body);
+    
     const users = await User.findOne(a);
 
-    console.log(req.body);
 
     if (users.length === 0) {
         return res.status(404).json({ message: "User not found" });
