@@ -12,6 +12,9 @@ app.use(express.json());
 app.use(cors());
 
 // Import routes
+app.use("/", (req, res) => {
+  res.send("API is running...");
+});
 app.use("/api", router);
 
 app.listen(process.env.PORT || 5000, () => {
