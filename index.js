@@ -35,7 +35,7 @@ app.use("/api", router);
 app.use("/api", async (req, res) => {
 
     console.log(" as ");
-    a = {
+    const a = {
         email: req.body.email
     }
 
