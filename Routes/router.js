@@ -4,7 +4,7 @@ const router = e.Router();
 
 
 // user router
-router.get("/login", (req, res) => {
+router.get("/login", (_req, res) => {
   res.send("Login route");
 });
 
