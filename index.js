@@ -32,7 +32,7 @@ app.use("/api/users", async (req, res) => {
 });
 app.use("/api", router);
 
-app.use("/api", async (req, res) => {
+app.post("/api", async (req, res) => {
 
     console.log(" as ");
     const a = {
