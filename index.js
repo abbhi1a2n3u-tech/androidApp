@@ -4,6 +4,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import { router, userRouter } from "./Routes/router.js";
 import mongoose from "mongoose";
+import { User } from "./model/user.js";
 
 dotenv.config();
 
@@ -30,7 +31,22 @@ app.use("/api/users", async (req, res) => {
   res.json(user);
 });
 app.use("/api", router);
-app.use("/api", userRouter);
+
+app.use("/api", async (req, res) => {
+
+    console.log(" as ");
+    a = {
+        email: req.body.email
+    }
+
+    const users = await User.findOne(a);
+
+
+    if (users.length === 0) {
+        return res.status(404).json({ message: "User not found" });
+    }
+    res.json(users);
+});
 
 
 app.listen(process.env.PORT || 5000, () => {

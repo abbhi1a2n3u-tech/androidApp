@@ -29,11 +29,11 @@ export const getUserByid = async (req, res) => {
 
 export const getUser = async (req, res) => {
 
+    console.log(" as ");
     a = {
         email: req.body.email
     }
-    console.log(" as "+  req.body);
-    
+
     const users = await User.findOne(a);
 
 
