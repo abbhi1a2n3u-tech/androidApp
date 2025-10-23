@@ -23,6 +23,20 @@ export const saveUserProfile =  async (req, res) => {
 export const getUserByid = async (req, res) => {
     const userId = req.body;
 
-    console.log("User ID received:", userId);
+    // console.log("User ID received:", userId);
 
+}
+
+export const getUser = async (req, res) => {
+    a = {
+        email: req.body.email
+    }
+    const users = await User.findOne(a);
+
+    console.log(users);
+
+    if (users.length === 0) {
+        return res.status(404).json({ message: "User not found" });
+    }
+    res.json(users);
 }
