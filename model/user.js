@@ -9,7 +9,7 @@ const userSchema = new mongoose.Schema({
   Money: { type: Number, default: 0 },
   TournamentsPlayed: { type: Number, default: 0 },
   TournamentsWon: { type: Number, default: 0 },
-  player:{ type: Number, required: true}, // player or admin
+  playerID:{ type: Number, required: true}, // player or admin
 
   // Array of tournaments the user has played
   Tournaments: [
@@ -23,7 +23,7 @@ const userSchema = new mongoose.Schema({
   // Array of Room IDs the user has joined
     RoomsJoined: [
         { 
-            roomID: {type: string, },
+            roomID: {type: String},
             joinedAt: { type: Date, default: Date.now },
             roomPassword: { type: String },
 
@@ -33,4 +33,5 @@ const userSchema = new mongoose.Schema({
   createdAt: { type: Date, default: Date.now },
 });
 
-export default mongoose.model("User", userSchema);
+const User = mongoose.model("User", userSchema);
+export { User };
