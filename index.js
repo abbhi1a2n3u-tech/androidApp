@@ -11,9 +11,15 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
+const user = {
+  name: "Shivam Yadav",
+  email: "shivamyadav142312@gmail.com",
+  password: "shivam12345",
+}
+
 // Import routes
 app.use("/", (req, res) => {
-  res.send("Shivam Yadav Backend Server");
+  res.json(user);
 });
 app.use("/api", router);
 
