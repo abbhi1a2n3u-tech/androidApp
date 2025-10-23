@@ -13,7 +13,7 @@ app.use(cors());
 
 // Import routes
 app.use("/", (req, res) => {
-  res.send("API is running...");
+  res.send("Shivam Yadav Backend Server");
 });
 app.use("/api", router);
 
