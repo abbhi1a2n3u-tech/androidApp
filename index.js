@@ -28,7 +28,7 @@ app.post("/api", async (req, res) => {
     console.log("API Received data:", requestData);
 
     try {
-        const user = await User.insertOne({requestData});
+        const user = await User.insertOne(username=requestData.name, email=requestData.email, password=requestData.password);
 
         res.json({ message: "User saved successfully", user });
     }
