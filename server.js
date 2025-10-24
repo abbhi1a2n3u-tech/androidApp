@@ -22,7 +22,7 @@ const ap = async () => {
             created_at TIMESTAMPTZ DEFAULT now()
         );
     `;
-    const {name, email, password} = {name: "Shivam Yadav", email: "shivamyadav142311@gmail.com", password: "password123"};
+    const {name, email, password} = {name: "Shivam Yadav", email: "shivamyadav142313@gmail.com", password: "password123"};
     const insert_query = await sql`
             INSERT INTO users (name, email, password)
             VALUES (${name}, ${email}, ${password})
@@ -34,6 +34,13 @@ const ap = async () => {
 ap().catch(err => {
     console.error("Database initialization failed:", err);
     process.exit(1);
+});
+
+app.get("/", (req, res) => {
+    res.send("Hello, World!");
+    res.json({ message: "Hello, World!" });
+
+    console.log("Root endpoint accessed");
 });
 
 const PORT = process.env.PORT || 3000;
