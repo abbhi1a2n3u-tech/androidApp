@@ -1,4 +1,5 @@
-import connectDB from "./db";
+import mongoose from "mongoose";
+import connectDB from "./db.js";
 
 const conn = await connectDB();
 
