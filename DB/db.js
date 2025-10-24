@@ -14,9 +14,9 @@ const connectDB = async (retries = 5) => {
       useUnifiedTopology: true,
 
       // ⏱️ Timeout settings (in ms)
-      connectTimeoutMS: 600000,           // Wait up to 600s for initial connect
-      socketTimeoutMS: 600000,            // Close idle sockets after 600s
-      serverSelectionTimeoutMS: 600000,   // Wait 600s to find a suitable server
+      onnectTimeoutMS: 60000,           // Wait up to 600s for initial connect
+      socketTimeoutMS: 60000,            // Close idle sockets after 600s
+      serverSelectionTimeoutMS: 60000,   // Wait 600s to find a suitable server
     }).asPromise();
 
     console.log('✅ MongoDB (createConnection) connected successfully');
