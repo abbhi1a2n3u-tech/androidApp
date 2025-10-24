@@ -12,23 +12,23 @@ app.use(cors());
 app.use("/api", router);
 
 const ap = async () => {    
-    // create a table 
-    await sql`
-        CREATE TABLE IF NOT EXISTS users (
-            id SERIAL PRIMARY KEY,
-            name TEXT NOT NULL,
-            email TEXT NOT NULL,
-            password TEXT NOT NULL,
-            created_at TIMESTAMPTZ DEFAULT now()
-        );
-    `;
-    const {name, email, password} = {name: "Shivam Yadav", email: "shivamyadav142313@gmail.com", password: "password123"};
+    await sql`CREATE TABLE IF NOT EXISTS users (
+        id SERIAL PRIMARY KEY,
+        name TEXT NOT NULL,
+        email TEXT NOT NULL,
+        password TEXT NOT NULL,
+        created_at TIMESTAMPTZ DEFAULT now()
+    );`;
+
+    const { name, email, password } = { name: "Shivam Yadav", email: "shivamyadav142313@gmail.com", password: "password123" };
+
     const insert_query = await sql`
-            INSERT INTO users (name, email, password)
-            VALUES (${name}, ${email}, ${password})
-            RETURNING *;
-        `;
-    console.log(insert_query);
+        INSERT INTO users (name, email, password)
+        VALUES (${name}, ${email}, ${password})
+        RETURNING *;`;
+
+console.log(insert_query);
+
 }
 
 ap().catch(err => {
