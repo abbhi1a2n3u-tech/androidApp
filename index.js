@@ -15,6 +15,20 @@ app.use(bodyParser.json());
 
 app.get("/", async (req, res) => {
     res.send("Hello from Backend!");
+
+    const data = {
+        name: "Abhianshu",
+        email: "shivam@gmail.com",
+        password: "213"
+    }
+
+    const user = User(data);
+    await user.save();
+    console.log("User saved:", user);
+
+    const findUser = await User.findOne({ email: "shivam@gmail.com" });
+
+    res.json({ message: "User saved", findUser });
 });
 
 app.post("/data", async (req, res) => {
