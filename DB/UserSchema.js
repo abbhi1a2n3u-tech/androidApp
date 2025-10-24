@@ -1,12 +1,14 @@
-import mongoose from "mongoose";
+import connectDB from "./db";
+
+const conn = await connectDB();
 
 const userSchema = new mongoose.Schema({
-  name: { type: String, required: true, unique: true },
+  username: { type: String, required: true, unique: true },
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
   createdAt: { type: Date, default: Date.now },
 });
 
-const User = mongoose.model("User", userSchema, "users");
+const User = conn.model("User", userSchema, "users"); // use connection object
 
 export default User;
