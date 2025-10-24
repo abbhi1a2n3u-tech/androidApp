@@ -14,11 +14,7 @@ app.use(bodyParser.json());
 
 
 app.get("/", async (req, res) => {
-    const { email } = req.body;
     res.send("Hello from Backend!");
-
-    const user = await User.findOne({ email: email });
-    console.log("User fetched:", user);
 });
 
 app.post("/data", async (req, res) => {
