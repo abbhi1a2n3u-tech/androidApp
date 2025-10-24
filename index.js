@@ -1,4 +1,4 @@
-import e from "express ";
+import e from "express";
 import cors from "cors";
 import bodyParser from "body-parser";
 
