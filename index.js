@@ -2,8 +2,8 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
-import { router, userRouter } from "./Routes/router.js";
 import mongoose from "mongoose";
+import { router } from "./Routes/router.js";
 import { User } from "./model/user.js";
 
 dotenv.config();
@@ -13,48 +13,64 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-mongoose.connect(process.env.MONGO_URI, {
+// ✅ Connect to MongoDB
+mongoose.connect(process.env.MONGO_DB_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 })
-.then(() => console.log("MongoDB connected"))
-.catch((err) => console.log("MongoDB connection error: ", err));
+  .then(() => console.log("✅ MongoDB connected successfully"))
+  .catch((err) => console.error("❌ MongoDB connection error:", err));
 
-const user = {
-  name: "Shivam Yadav",
-  email: "shivamyadav142312@gmail.com",
+// ✅ Temporary test user (for seeding)
+const testUser = {
+  name: "Abhi Yadav",
+  email: "Ankush@gmail.com",
   password: "shivam12345",
-}
+};
 
-// Import routes
-app.use("/api/users", async (req, res) => {
-  console.log("User route accessed");
-  const newUser = await User.findOne({ email: user.email });
-  if (!newUser) {
-    const createdUser = new User(user);
-    await createdUser.save();
-    return res.json(createdUser);
+// ✅ Create a new user if not exists
+app.get("/api/users", async (req, res) => {
+  try {
+    console.log("📩 /api/users route accessed");
+    const existingUser = await User.findOne({ email: testUser.email });
+
+    if (!existingUser) {
+      const createdUser = new User(testUser);
+      await createdUser.save();
+      return res.json({ message: "User created", user: createdUser });
+    }
+
+    res.json({ message: "User already exists", user: existingUser });
+  } catch (error) {
+    console.error("Error:", error);
+    res.status(500).json({ message: "Internal Server Error" });
   }
 });
-app.use("/api", router);
 
-app.get("/api", async (req, res) => {
+// ✅ Example route for finding user by email
+app.post("/api/find", async (req, res) => {
+  try {
+    const { email } = req.body;
+    console.log("🔍 Searching for user:", email);
 
-    console.log(" as ");
-    const a = {
-        email: req.body.email
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
     }
 
-    const users = await User.findOne(a);
-
-
-    if (users.length === 0) {
-        return res.status(404).json({ message: "User not found" });
-    }
-    res.json(users);
+    res.json(user);
+  } catch (error) {
+    console.error("Error:", error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
 });
 
+// ✅ Register all other routes
+app.use("/api", router);
 
-app.listen(process.env.PORT || 5000, () => {
-  console.log("Server is running on port " + (process.env.PORT || 5000));
+// ✅ Start server
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => {
+  console.log(`🚀 Server is running on port ${PORT}`);
 });
