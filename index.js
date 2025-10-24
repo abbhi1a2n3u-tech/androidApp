@@ -22,6 +22,12 @@ app.post("/data", async (req, res) => {
     res.json({ message: "Data received successfully", data: requestData });
 });
 
+app.post("/api", async (req, res) => {
+    const requestData = req.body;
+    console.log("API Received data:", requestData);
+    res.json({ message: "API Data received successfully", data: requestData });
+});
+
 console.log("Starting server...");
 
 

@@ -1,27 +1,39 @@
-import mongoose from "mongoose";
-import dotenv from "dotenv";
+import mongoose from 'mongoose';
+import dotenv from 'dotenv';
 
 dotenv.config();
 
-const MONGO_URI = process.env.MONGO_DB_URI || process.env.MONGO_URI;
-console.log(MONGO_URI);
+let conn = null;
 
-const connectDB = async () => {
-   try {
-    if (!MONGO_URI) {
-      throw new Error('MONGO_DB_URI or MONGO_URI environment variable is not set');
-    }
-    await mongoose.connect(MONGO_URI, {
-      // 🔥 Timeouts (in milliseconds)
-      connectTimeoutMS: 300000, // 300 seconds (default is 10s)
-      socketTimeoutMS: 450000,  // 450 seconds (default is 30s)
-      serverSelectionTimeoutMS: 300000 // 300 seconds
-    });
-    console.log('✅ MongoDB connected successfully');
+const connectDB = async (retries = 5) => {
+  if (conn) return conn;
+
+  try {
+    conn = await mongoose.createConnection(process.env.MONGO_DB_URI, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+
+      // ⏱️ Timeout settings (in ms)
+      connectTimeoutMS: 600000,           // Wait up to 600s for initial connect
+      socketTimeoutMS: 600000,            // Close idle sockets after 600s
+      serverSelectionTimeoutMS: 600000,   // Wait 600s to find a suitable server
+    }).asPromise();
+
+    console.log('✅ MongoDB (createConnection) connected successfully');
+    return conn;
+
   } catch (err) {
-    console.error('❌ MongoDB connection error:', err.message);
-    process.exit(1);
+    console.error(`❌ Connection failed: ${err.message}`);
+
+    if (retries > 0) {
+      console.log(`🔁 Retrying in 5s... (${retries - 1} left)`);
+      await new Promise(res => setTimeout(res, 5000));
+      return connectDB(retries - 1);
+    } else {
+      process.exit(1);
+    }
   }
 };
+
 
 export default connectDB;
