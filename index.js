@@ -2,6 +2,7 @@ import e from "express";
 import cors from "cors";
 import bodyParser from "body-parser";
 import connectDB from "./DB/db.js";
+import User from "./DB/UserSchema.js";
 connectDB();
 
 const app = e();
@@ -25,7 +26,16 @@ app.post("/data", async (req, res) => {
 app.post("/api", async (req, res) => {
     const requestData = req.body;
     console.log("API Received data:", requestData);
-    res.json({ message: "API Data received successfully", data: requestData });
+
+    try {
+        const user = await User.insertOne({requestData});
+
+        res.json({ message: "User saved successfully", user });
+    }
+    catch(err){
+        console.error("Error saving user:", err);
+    }
+
 });
 
 console.log("Starting server...");
