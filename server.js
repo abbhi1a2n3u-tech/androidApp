@@ -13,6 +13,6 @@ app.use(cros());
 
 sql;
 
-app.use("/api/register", router);
+app.use("/api", router);
 
 console.log("🚀 Server is running on port");
