@@ -1,14 +1,13 @@
 import e from "express";
 import { getUserByid, saveUserProfile } from "../APIs/profileApi.js";
+import { Login } from "../APIs/login.js";
 
 const router = e.Router();
 const userRouter = e.Router();
 
 
 // user router
-router.get("/login", (_req, res) => {
-  res.send("Login route");
-});
+router.get("/login", Login);
 router.get("/user/profile", saveUserProfile);
 
 
