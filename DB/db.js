@@ -1,37 +1,25 @@
-import mongoose from 'mongoose';
-import dotenv from 'dotenv';
-dotenv.config();
+const { MongoClient, ServerApiVersion } = require('mongodb');
+const uri = "mongodb+srv://Abhi:8535011326@abhisave.lb4is99.mongodb.net/?appName=AbhiSave";
 
-let conn = null;
-
-const connectDB = async (retries = 5) => {
-  if (conn) return conn;
-
-  try {
-    conn = await mongoose.createConnection(process.env.MONGO_DB_URI, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-
-      // ✅ Correct spelling
-      connectTimeoutMS: 60000,
-      socketTimeoutMS: 60000,
-      serverSelectionTimeoutMS: 60000,
-    }).asPromise();
-
-    console.log('✅ MongoDB (createConnection) connected successfully');
-    return conn;
-
-  } catch (err) {
-    console.error(`❌ Connection failed: ${err.message}`);
-
-    if (retries > 0) {
-      console.log(`🔁 Retrying in 5s... (${retries - 1} left)`);
-      await new Promise(res => setTimeout(res, 5000));
-      return connectDB(retries - 1);
-    } else {
-      process.exit(1);
-    }
+// Create a MongoClient with a MongoClientOptions object to set the Stable API version
+const client = new MongoClient(uri, {
+  serverApi: {
+    version: ServerApiVersion.v1,
+    strict: true,
+    deprecationErrors: true,
   }
-};
+});
 
-export default connectDB;
+async function run() {
+  try {
+    // Connect the client to the server	(optional starting in v4.7)
+    await client.connect();
+    // Send a ping to confirm a successful connection
+    await client.db("admin").command({ ping: 1 });
+    console.log("Pinged your deployment. You successfully connected to MongoDB!");
+  } finally {
+    // Ensures that the client will close when you finish/error
+    await client.close();
+  }
+}
+run().catch(console.dir);
