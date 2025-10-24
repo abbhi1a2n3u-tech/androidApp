@@ -1,6 +1,5 @@
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
-
 dotenv.config();
 
 let conn = null;
@@ -13,11 +12,10 @@ const connectDB = async (retries = 5) => {
       useNewUrlParser: true,
       useUnifiedTopology: true,
 
-      // ⏱️ Timeout settings (in ms)
-      connectTimeoutMS: 60000,          // ✅ capital T, MS suffix
-      socketTimeoutMS: 60000,           // ✅ correct
-      serverSelectionTimeoutMS: 60000,  // ✅ correct
-
+      // ✅ Correct spelling
+      connectTimeoutMS: 60000,
+      socketTimeoutMS: 60000,
+      serverSelectionTimeoutMS: 60000,
     }).asPromise();
 
     console.log('✅ MongoDB (createConnection) connected successfully');
@@ -35,6 +33,5 @@ const connectDB = async (retries = 5) => {
     }
   }
 };
-
 
 export default connectDB;

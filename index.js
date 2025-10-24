@@ -28,8 +28,10 @@ app.post("/api", async (req, res) => {
     console.log("API Received data:", requestData);
 
     try {
-        const user = await User.insertOne(requestData);
+        const user = User(requestData);
 
+        await user.save();
+        console.log("User saved successfully:", user);
         res.json({ message: "User saved successfully", user });
     }
     catch(err){
